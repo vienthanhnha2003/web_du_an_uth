@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+ <!-- Thêm Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Thêm Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+       
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
+ 
+</head>
+
+<body id="page-top">
+
+   <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Thêm cây trồng</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <input type="email" class="txtmacay form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Nhập mã cây">
+                                        </div>
+                                       
+                                          <div class="form-group">
+                                            <input type="email" class="txttencay form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Tên cây">
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="cbloaicay form-control form-control-user">
+                                                <option class="form-control" selected value="có múi">Cây có múi</option>
+                                                <option class="form-control" value="Ăn quả">Cây ăn quả</option>
+                                            </select>
+                                        </div>
+                                        <a href="#" class="btninsert btn btn-primary btn-user btn-block">
+                                            Thêm
+                                        </a>
+
+                                        <hr>
+                                       
+                                    </form>
+                                    <hr>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><div class="col-sm-12"><table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                
+                                    
+                                        <tr><th rowspan="1" colspan="1">STT</th><th rowspan="1" colspan="1">Mã Cây</th><th rowspan="1" colspan="1">Tên cây</th><th rowspan="1" colspan="1">Loại Cây</th><th>Xóa dữ liệu</th></tr>
+                                  
+                                    <tbody class="addDataCayTrong">                    
+                                    
+                                      
+                                     </tbody>
+                                </table></div></div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+   
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    
+    <script>
+        function ShowDataCayTrong(){
+            var dataSend={
+
+            }
+                $.ajax({
+                url: 'php/api_hien_thi_cay_trong.php',
+                type: 'GET', // hoặc 'GET'
+                data: 
+                dataSend
+                ,
+                success: function(response) {
+                    console.log( response);
+                    var stt=1
+                    var html=''
+                    for ( var x in response){
+                        var ob=response[x]
+                         console.log(ob);
+                        html=html+ '<tr class="odd">'+
+                                            '<td class="sorting_1">'+stt+'</td>'+
+                                             '<td>'+ob.MaCay+'</td>'+
+                                            '<td>'+ob.TenCay+'</td>'+
+                                           
+                                            '<td>'+ob.LoaiCay+'</td>'+
+                                            '<td><a href="#" class="btn btn-danger btn-circle btn-lg">'+
+                                        '<i class="fas fa-trash"></i>'+
+                                    '</a></td>'+
+                                        '</tr>';
+                        stt++;
+                    }
+                    console.log(html);
+                    $(".addDataCayTrong").html(html)
+                },
+                    error: function(error) {
+                    console.log('Lỗi:', error);
+    }
+});
+        }
+        // Đợi tài liệu tải xong
+        $(document).ready(function(){
+            //Khi trang web load
+            ShowDataCayTrong()
+            $(".btninsert").click(function(){
+                var macay=$(".txtmacay").val()
+                 var tencay=$(".txttencay").val()
+                  var loaicay=$(".cbloaicay").val()
+               console.log("đã click ok"+macay)
+               var dataSend={
+                    MaCay:macay,
+                    TenCay:tencay,
+                    LoaiCay:loaicay
+               }
+               $.ajax({
+                url: 'php/api_them_bang_cay_trong.php',
+                type: 'POST', // hoặc 'GET'
+                data: 
+                dataSend
+                ,
+                success: function(response) {
+                    console.log( response);
+                    if(response.status=='success'){
+                      alert(response.message)
+                      ShowDataCayTrong()
+                      //  bootbox.alert('This is the default alert!');
+                    }else{
+                         alert(response.message)
+                          //bootbox.alert(response.message);
+                    }
+                },
+                    error: function(error) {
+                    console.log('Lỗi:', error);
+    }
+});
+            });
+        });
+    </script>
+
+</body>
+
+</html>
